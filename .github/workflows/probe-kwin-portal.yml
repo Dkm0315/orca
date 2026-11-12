@@ -1,0 +1,48 @@
+name: probe-kwin-portal
+on:
+  push:
+    branches: [probe/kwin-portal-screenshot-2]
+jobs:
+  ubuntu-plasma5:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - run: sudo apt-get update && sudo apt-get install -y kwin-wayland xdg-desktop-portal xdg-desktop-portal-kde python3-gi gir1.2-atspi-2.0 gir1.2-gdkpixbuf-2.0 at-spi2-core python3-pyqt5 qtwayland5 gedit libglib2.0-bin
+      - run: sudo apt-get install -y kwin-wayland-backend-virtual || true
+      - run: bash .github/probe/kwin-probe.sh
+        env:
+          TARGET_APP: gedit
+          TARGET_CMD: gedit --new-window
+          COVER_CMD: python3 .github/probe/qt_probe_app.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ubuntu-plasma5
+          path: probe-out
+  ubuntu26-plasma6:
+    strategy:
+      fail-fast: false
+      matrix:
+        render: [none]
+    runs-on: ubuntu-26.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - if: matrix.render == 'vgem'
+        run: sudo modprobe vgem && sudo chmod 666 /dev/dri/renderD128; ls -la /dev/dri || true
+      - run: sudo apt-get update && sudo apt-get install -y kwin-wayland xdg-desktop-portal xdg-desktop-portal-kde python3-gi gir1.2-atspi-2.0 gir1.2-gdkpixbuf-2.0 at-spi2-core python3-pyqt6 qt6-wayland gedit libglib2.0-bin gdb qml6-module-qt5compat-graphicaleffects breeze
+      - run: bash .github/probe/kwin-probe.sh
+        env:
+          TARGET_APP: qtprobe
+          TARGET_CMD: python3 .github/probe/qt_probe_app.py
+          COVER_CMD: gedit --new-window
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ubuntu26-plasma6-${{ matrix.render }}
+          path: probe-out

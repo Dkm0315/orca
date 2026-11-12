@@ -624,18 +624,20 @@ KWIN_LAYOUT_SCRIPT = """(function (target) {
         if (window.onAllDesktops) {
             return true;
         }
+        // Plasma 5 names the current desktop object currentVirtualDesktop; its currentDesktop is a number.
         var current = workspace.currentDesktopForScreen && window.output
-            ? workspace.currentDesktopForScreen(window.output) : workspace.currentDesktop;
-        if (typeof current === "number") {
-            return window.desktop === current;
-        }
-        var desktops = window.desktops || [];
-        for (var i = 0; i < desktops.length; i++) {
-            if (desktops[i].id === current.id) {
-                return true;
+            ? workspace.currentDesktopForScreen(window.output)
+            : (workspace.currentVirtualDesktop || workspace.currentDesktop);
+        var desktops = window.desktops;
+        if (current && typeof current === "object" && desktops && desktops.length !== undefined) {
+            for (var i = 0; i < desktops.length; i++) {
+                if (desktops[i].id === current.id) {
+                    return true;
+                }
             }
+            return false;
         }
-        return false;
+        return window.desktop === workspace.currentDesktop;
     }
     function onCurrentActivity(window) {
         var activities = window.activities || [];
