@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { RuntimeClient } from '../runtime/client'
-import { parseArgs } from '../args'
+import { parseArgs } from '../arguments/args'
 import { TERMINAL_HANDLERS } from './terminal'
 
 afterEach(() => vi.restoreAllMocks())

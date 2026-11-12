@@ -49,7 +49,7 @@ vi.mock('child_process', async () => {
 import { main } from '../index'
 import { useWorktreeAwarenessEnvironment } from '../index-test-harness'
 import { RuntimeClientError } from '../runtime/types'
-import { buildWorktree, okFixture } from '../test-fixtures'
+import { buildWorktree, okFixture } from '../runtime/fixtures/runtime-rpc-fixtures'
 
 const SAVED = [
   { id: 'srv-b', name: 'build-box' },

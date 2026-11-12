@@ -53,7 +53,7 @@ vi.mock('child_process', async () => {
 })
 
 import { main } from '../index'
-import { okFixture, queueFixtures } from '../test-fixtures'
+import { okFixture, queueFixtures } from '../runtime/fixtures/runtime-rpc-fixtures'
 import { useWorktreeAwarenessEnvironment } from '../index-test-harness'
 
 function readFixture(overrides: Record<string, unknown> = {}) {

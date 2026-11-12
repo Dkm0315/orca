@@ -7,7 +7,7 @@ import type { CatalogRow } from './workspace-catalog-row'
 import { readEnclosingWorkspaceCatalog } from './enclosing-workspace-catalog'
 import { RuntimeClient } from '../runtime/client'
 import { RuntimeClientError } from '../runtime/types'
-import { okFixture } from '../test-fixtures'
+import { okFixture } from '../runtime/fixtures/runtime-rpc-fixtures'
 
 const hubFolder = { id: 'folder:hub', path: '/tmp/hub', hostId: 'local' as const }
 const innerFolder = { id: 'folder:inner', path: '/tmp/hub/inner', hostId: 'local' as const }
